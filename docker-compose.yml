@@ -138,6 +138,24 @@ services:
     networks:
       - travel_network
 
+  #booking service
+  travelbookingservice:
+    build:
+      context: .
+      dockerfile: Booking/Booking.API/Dockerfile
+    volumes:
+      - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
+    ports:
+      - "6003:8080"
+    depends_on:
+      - postgres
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bookingdb
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+    networks:
+      - travel_network
+
 
   #zookeeper
   zookeeper:

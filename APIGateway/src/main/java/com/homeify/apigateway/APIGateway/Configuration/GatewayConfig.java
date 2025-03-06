@@ -61,6 +61,12 @@ public class GatewayConfig {
 //                        .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
                         .uri("lb://ServiceInfo.API"))
 
+
+
+                .route("booking_booking_route", r -> r.path("/api/booking/**")
+//                        .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
+                        .uri("lb://Booking.API"))
+
                 .build();
 
     }
