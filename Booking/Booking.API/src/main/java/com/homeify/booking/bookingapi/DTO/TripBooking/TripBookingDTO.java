@@ -1,16 +1,14 @@
-package com.homeify.booking.Entities;
+package com.homeify.booking.bookingapi.DTO.TripBooking;
 
+import com.homeify.booking.Entities.Booking;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-public class TripBooking {
+public class TripBookingDTO {
 
     private String id;
-    private Booking booking;
     private String tripId;
     private Long amount;
 }

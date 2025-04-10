@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {TripBookingMapper.class})
 public interface BookingMapper {
 
     //chuyển từ BookingModel sang Booking

@@ -69,6 +69,9 @@ public class BookingController {
     @GetMapping("/getById/{id}")
     public BookingDTO getById(@PathVariable String id) {
         Booking b = bookingUsecase.findBookingById(id);
+        if (b == null) {
+            return null;
+        }
         return bookingDTOMapper.toBookingDTO(b);
     }
 }

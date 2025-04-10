@@ -2,6 +2,8 @@ package com.homeify.booking.Repository;
 
 import com.homeify.booking.Model.BookingModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +14,8 @@ public interface BookingRepository extends JpaRepository<BookingModel, String> {
 
     //tìm theo danh sách id
     List<BookingModel> findByIdIn(List<String> ids);
+
+    // Đếm số booking theo tháng và năm của bookingDate
+    @Query(value = "SELECT COUNT(*) FROM booking b WHERE EXTRACT(MONTH FROM b.booking_date) = :month AND EXTRACT(YEAR FROM b.booking_date) = :year", nativeQuery = true)
+    int countByMonthAndYear(@Param("month") int month, @Param("year") int year);
 }

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TripBookingDTOMapper.class})
 public interface BookingDTOMapper {
 
     //chuyển từ BookingDTO sang Booking

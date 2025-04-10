@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,4 +17,6 @@ public class Booking {
     private String status;
     private String paymentStatus;
     private LocalDateTime createdAt;
+
+    private List<TripBooking> tripBookings;
 }

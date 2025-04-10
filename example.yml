@@ -41,7 +41,7 @@ services:
     networks:
       - travel_network
 
-#  #postgres
+  #  #postgres
   postgres:
     image: postgres:latest
     environment:
@@ -70,11 +70,8 @@ services:
 
   #service-registry
   service-registry:
-    image: service-registry:latest    # image của Service Registry (nếu đã build image)
+    image: ducphu2813/service-registry:latest    # image của Service Registry (nếu đã build image)
     container_name: service-registry  # tên của container
-    build:
-      context: ./ServiceRegistry      # đường dẫn tới Dockerfile
-      dockerfile: Dockerfile          # tên file Dockerfile (nếu có dùng tên khác thì đổi)
     volumes:
       - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
     ports:
@@ -86,9 +83,7 @@ services:
 
   #api gateway
   apigateway:
-    build:
-      context: ./APIGateway
-      dockerfile: Dockerfile
+    image: ducphu2813/apigateway:latest
     volumes:
       - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
     ports:
@@ -103,9 +98,7 @@ services:
 
   #auth service
   travelauthservice:
-    build:
-      context: .
-      dockerfile: Auth/Auth.API/Dockerfile
+    image: ducphu2813/travelauthservice:latest
     volumes:
       - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
     ports:
@@ -122,9 +115,7 @@ services:
 
   # trip service
   traveltripservice:
-    build:
-      context: .
-      dockerfile: ServiceInfo/ServiceInfo.API/Dockerfile
+    image: ducphu2813/traveltripservice:latest
     volumes:
       - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
     ports:
@@ -140,9 +131,7 @@ services:
 
   #booking service
   travelbookingservice:
-    build:
-      context: .
-      dockerfile: Booking/Booking.API/Dockerfile
+    image: ducphu2813/travelbookingservice:latest
     volumes:
       - maven_cache:/root/.m2         # sử dụng maven_cache build cho nhanh
     ports:
@@ -183,16 +172,6 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     networks:
       - travel_network
-
-  kafdrop:
-    image: obsidiandynamics/kafdrop
-    restart: "no"
-    ports:
-      - "9000:9000"
-    environment:
-      KAFKA_BROKER_CONNECT: kafka:9092
-    depends_on:
-      - kafka
 
 
 networks:

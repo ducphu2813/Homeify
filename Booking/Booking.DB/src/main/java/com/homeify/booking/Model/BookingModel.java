@@ -1,15 +1,13 @@
 package com.homeify.booking.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "booking")
 @Getter
@@ -40,4 +38,9 @@ public class BookingModel {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    //khóa ngoại đến bảng tripbooking
+    @OneToMany(mappedBy = "booking"
+            , cascade = CascadeType.REMOVE)
+    private List<TripBookingModel> tripBookings;
 }
