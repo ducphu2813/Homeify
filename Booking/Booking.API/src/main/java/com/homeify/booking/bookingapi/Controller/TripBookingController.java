@@ -29,6 +29,7 @@ public class TripBookingController {
     //get all
     @RequestMapping("/getAll")
     public List<TripBookingDTO> getAll() {
+        
         List<TripBooking> tripBookings = tripBookingUsecase.getAllTripBookings();
 
         //chuyển từ List<TripBooking> sang List<TripBookingDTO>

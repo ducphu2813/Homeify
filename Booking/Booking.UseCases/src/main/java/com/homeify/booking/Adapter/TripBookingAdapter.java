@@ -20,4 +20,10 @@ public interface TripBookingAdapter {
 
     //tìm theo id
     TripBooking findTripBookingById(String tripBookingId);
+
+    //tìm theo tripId
+    List<TripBooking> findTripBookingsByTripId(String tripId);
+
+    // Tìm TripBooking theo tripId và bookingId
+    TripBooking findTripBookingsByTripIdAndBookingId(String tripId, String bookingId);
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Table(name = "tripbooking")
 @Getter
 @Setter
@@ -29,4 +31,9 @@ public class TripBookingModel {
 
     @Column(name = "amount")
     private Long amount;
+
+    //liên kết đến bảng seatbooking
+    @OneToMany(mappedBy = "tripBooking"
+                , cascade = CascadeType.REMOVE)
+    private List<SeatBookingModel> seatBookings;
 }

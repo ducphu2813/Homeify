@@ -1,10 +1,13 @@
 package com.homeify.booking.AdapterImpl;
 
 import com.homeify.booking.Adapter.TripBookingAdapter;
+import com.homeify.booking.Entities.Booking;
 import com.homeify.booking.Entities.TripBooking;
+import com.homeify.booking.Mapper.BookingMapper;
 import com.homeify.booking.Mapper.TripBookingMapper;
 import com.homeify.booking.Model.BookingModel;
 import com.homeify.booking.Model.TripBookingModel;
+import com.homeify.booking.Repository.BookingRepository;
 import com.homeify.booking.Repository.TripBookingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +20,17 @@ public class TripBookingAdapterImpl implements TripBookingAdapter {
     private final TripBookingRepository tripBookingRepository;
     private final TripBookingMapper tripBookingMapper;
 
-    public TripBookingAdapterImpl(TripBookingRepository tripBookingRepository, TripBookingMapper tripBookingMapper) {
+    private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
+
+    public TripBookingAdapterImpl(TripBookingRepository tripBookingRepository
+                                    , TripBookingMapper tripBookingMapper
+                                    , BookingRepository bookingRepository
+                                    , BookingMapper bookingMapper) {
         this.tripBookingRepository = tripBookingRepository;
         this.tripBookingMapper = tripBookingMapper;
+        this.bookingRepository = bookingRepository;
+        this.bookingMapper = bookingMapper;
     }
 
     @Override
@@ -78,12 +89,52 @@ public class TripBookingAdapterImpl implements TripBookingAdapter {
 
     @Override
     public List<TripBooking> getAllTripBookings() {
-        return List.of();
+        List<TripBookingModel> tripBookingModels = tripBookingRepository.findAll();
+
+        //dùng mapper
+        List<TripBooking> tripBookings = tripBookingMapper.toTripBookings(tripBookingModels);
+
+        return tripBookings;
     }
 
     @Override
     public TripBooking findTripBookingById(String tripBookingId) {
-        return null;
+        TripBookingModel tripBookingModel = tripBookingRepository.findById(tripBookingId).orElse(null);
+
+        if (tripBookingModel == null) {
+            return null;
+        }
+
+        //dùng mapper
+        TripBooking tripBooking = tripBookingMapper.toTripBooking(tripBookingModel);
+
+        //lấy booking để set vào trip booking
+        BookingModel booking = bookingRepository.findById(tripBooking.getBooking().getId()).orElse(null);
+        Booking booking1 = bookingMapper.toBooking(booking);
+        tripBooking.setBooking(booking1);
+
+        return tripBooking;
+    }
+
+    @Override
+    public List<TripBooking> findTripBookingsByTripId(String tripId) {
+        List<TripBookingModel> tripBookingModels = tripBookingRepository.findByTripId(tripId);
+
+        //dùng mapper
+        List<TripBooking> tripBookings = tripBookingMapper.toTripBookings(tripBookingModels);
+
+        return tripBookings;
+    }
+
+    // Tìm TripBooking theo tripId và bookingId
+    @Override
+    public TripBooking findTripBookingsByTripIdAndBookingId(String tripId, String bookingId) {
+        TripBookingModel tripBookingModels = tripBookingRepository.findByTripIdAndBookingId(tripId, bookingId);
+
+        //dùng mapper
+        TripBooking tripBooking = tripBookingMapper.toTripBooking(tripBookingModels);
+
+        return tripBooking;
     }
 
 

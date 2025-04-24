@@ -20,4 +20,10 @@ public interface BookingAdapter {
 
     //tìm theo id
     Booking findBookingById(String bookingId);
+
+    //tìm theo userId
+    List<Booking> findBookingsByUserId(String userId);
+
+    //Tìm Booking theo userId và đã có chuyến đi tripId đó
+    Booking findBookingByUserIdAndTripId(String userId, String tripId);
 }

@@ -78,7 +78,22 @@ public class BookingAdapterImpl implements BookingAdapter {
         return bookingMapper.toBooking(bookingModel);
     }
 
-    //tự động tạo id theo số thứ tự/tháng/năm(BK00001/10/2023, BK00002/10/2023, BK00003/10/2023,...)
+    @Override
+    public List<Booking> findBookingsByUserId(String userId) {
+        List<BookingModel> bookingModels = bookingRepository.findByUserId(userId);
+
+        return bookingMapper.toBookings(bookingModels);
+    }
+
+    //Tìm Booking theo userId và đã có chuyến đi tripId đó
+    @Override
+    public Booking findBookingByUserIdAndTripId(String userId, String tripId) {
+        BookingModel bookingModel = bookingRepository.findBookingByUserIdAndTripId(userId, tripId);
+
+        return bookingMapper.toBooking(bookingModel);
+    }
+
+    //tự động tạo id theo số thứ tự/tháng/năm(BK00001_10_2023, BK00002_10_2023, BK00003_10_2023,...)
     //tháng và năm là tháng và năm hiện tại
     //số thứ tự là số thứ tự của booking trong tháng đó
     private String generateBookingId() {
@@ -100,6 +115,6 @@ public class BookingAdapterImpl implements BookingAdapter {
         int sequence = count + 1;
 
         // tạo id
-        return "BK" + String.format("%05d", sequence) + "/" + month + "/" + year;
+        return "BK" + String.format("%05d", sequence) + "_" + month + "_" + year;
     }
 }
