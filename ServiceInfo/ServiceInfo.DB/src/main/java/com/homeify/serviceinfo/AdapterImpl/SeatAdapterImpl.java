@@ -47,7 +47,7 @@ public class SeatAdapterImpl implements SeatAdapter {
         seatModel.setId(generateId());
 
         //lưu vào db
-        seatModel.setTransportationId(seat.getTransportation().getId());
+        seatModel.setTransportationId(seat.getTransportationId());
         seatModel = seatRepository.save(seatModel);
 
         //dùng mapper chuyển từ model sang entity
@@ -71,7 +71,7 @@ public class SeatAdapterImpl implements SeatAdapter {
         seatModel.setId(seatId);
 
         //set id transportation
-        seatModel.setTransportationId(seat.getTransportation().getId());
+        seatModel.setTransportationId(seat.getTransportationId());
 
         seatModel = seatRepository.save(seatModel);
 
@@ -86,30 +86,11 @@ public class SeatAdapterImpl implements SeatAdapter {
 
     @Override
     public List<Seat> getAllSeat() {
+
         List<SeatModel> seatModels = seatRepository.findAll();
 
-        //lấy danh sách transport id từ seatModels
-        List<String> transportIds = seatRepository.findAll()
-                .stream()
-                .map(SeatModel::getTransportationId)
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-
-        //lấy danh sách transport từ transportIds
-        Map<String, Transportation> transportationsMap = transportationRepository.findAllByIdIn(transportIds)
-                .stream()
-                .map(transportationMapper::toTransportation)
-                .collect(Collectors.toMap(Transportation::getId, Function.identity()));
-
-        //chuyển từ List<SeatModel> sang List<Seat>
-        return seatModels.stream()
-                .map( seatModel -> {
-                    Seat seat = seatMapper.toSeat(seatModel);
-                    seat.setTransportation(transportationsMap.get(seatModel.getTransportationId()));
-                    return seat;
-                })
-                .collect(Collectors.toList());
+        //dùng mapper
+        return seatMapper.toSeat(seatModels);
     }
 
     @Override
@@ -120,14 +101,7 @@ public class SeatAdapterImpl implements SeatAdapter {
             return null;
         }
 
-        Seat seat = seatMapper.toSeat(seatModel);
-
-        Transportation transportation = transportationMapper
-                .toTransportation(transportationRepository.findById(seatModel.getTransportationId()).orElse(null));
-
-        seat.setTransportation(transportation);
-
-        return seat;
+        return seatMapper.toSeat(seatModel);
     }
 
     //tự động tạo id(S001, S002, S003,...)

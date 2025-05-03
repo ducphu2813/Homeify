@@ -40,11 +40,6 @@ public class SeatController {
 
         Seat seat = seatDTOMapper.toSeat(seatDTO);
 
-        //phần này lấy id từ dto rồi set vào entity
-        Transportation transportation = new Transportation();
-        transportation.setId(seatDTO.getTransportationId());
-        seat.setTransportation(transportation);
-
         seat = seatUsecase.addSeat(seat);
 
         return seatDTOMapper.toSeatDTO(seat);
@@ -57,11 +52,6 @@ public class SeatController {
 
         Seat seat = seatDTOMapper.toSeat(seatDTO);
 
-        //phần này lấy id từ dto rồi set vào entity
-        Transportation transportation = new Transportation();
-        transportation.setId(seatDTO.getTransportationId());
-        seat.setTransportation(transportation);
-
         seat = seatUsecase.updateSeat(seat, id);
 
         return seatDTOMapper.toSeatDTO(seat);
@@ -72,5 +62,15 @@ public class SeatController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         seatUsecase.deleteSeat(id);
+    }
+
+    //tìm theo id
+    @GetMapping("/getById/{id}")
+    public SeatDTO getById(@PathVariable String id) {
+        Seat seat = seatUsecase.findSeatById(id);
+        if (seat == null) {
+            return null;
+        }
+        return seatDTOMapper.toSeatDTO(seat);
     }
 }

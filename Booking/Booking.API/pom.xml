@@ -75,6 +75,12 @@
             <version>0.2.0</version>
         </dependency>
 
+        <!-- feign client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!--tham chieu den use case-->
         <dependency>
             <groupId>com.homeify.booking</groupId>

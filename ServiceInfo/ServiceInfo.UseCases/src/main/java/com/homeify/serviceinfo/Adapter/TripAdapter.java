@@ -2,6 +2,7 @@ package com.homeify.serviceinfo.Adapter;
 
 import com.homeify.serviceinfo.Entities.Trip;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TripAdapter {
@@ -20,4 +21,7 @@ public interface TripAdapter {
 
     //tìm theo id
     Trip findTripById(String tripId);
+
+    //tìm theo departureCityId và arrivalCityId và >= departureDate
+    List<Trip> findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(String departureCityId, String arrivalCityId, LocalDateTime departureDate);
 }

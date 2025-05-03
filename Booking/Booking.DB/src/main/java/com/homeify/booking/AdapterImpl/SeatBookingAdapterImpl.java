@@ -129,6 +129,13 @@ public class SeatBookingAdapterImpl implements SeatBookingAdapter {
         return seatBookingMapper.toSeatBookings(bookedSeat);
     }
 
+    //lấy danh sách id seats đã đặt theo tripId
+    @Override
+    public List<String> findBookedSeatIdsByTripId(String tripId) {
+        //lấy danh sách id seats đã đặt theo tripId
+        return seatBookingRepository.findBookedSeatIdsByTripId(tripId);
+    }
+
 
     //tự sinh id cho seat booking
     private String generateSeatBookingId() {

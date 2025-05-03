@@ -12,12 +12,13 @@ import java.util.stream.Collectors;
 public class UserUsecase {
 
     private final UsersAdapter userAdapter;
-    private final KafkaProducerAdapter kafkaProducerAdapter;
+//    private final KafkaProducerAdapter kafkaProducerAdapter;
 
     public UserUsecase(UsersAdapter userAdapter
-                        , KafkaProducerAdapter kafkaProducerAdapter) {
+//                        , KafkaProducerAdapter kafkaProducerAdapter
+                        ) {
         this.userAdapter = userAdapter;
-        this.kafkaProducerAdapter = kafkaProducerAdapter;
+//        this.kafkaProducerAdapter = kafkaProducerAdapter;
     }
 
     //thêm user
@@ -47,7 +48,7 @@ public class UserUsecase {
     public List<Users> getAllUsers() {
 
         //test gửi message vào kafka topic
-        kafkaProducerAdapter.sendMessage("test-topic", "Hello from Auth Service");
+//        kafkaProducerAdapter.sendMessage("test-topic", "Hello from Auth Service");
 
         return userAdapter.getAllUsers();
     }

@@ -28,4 +28,9 @@ public interface SeatBookingRepository extends JpaRepository<SeatBookingModel, S
     //tìm các SeatBooking theo 1 tripBookingId và List seatId
     @Query("SELECT sb FROM SeatBookingModel sb WHERE sb.tripBooking.id = :tripBookingId AND sb.seatId IN :seatIds")
     List<SeatBookingModel> findByTripBookingIdAndSeatId(@Param("tripBookingId") String tripBookingId, @Param("seatIds") List<String> seatIds);
+
+
+    //lấy các ghế đã đặt theo trip Id
+    @Query(value = "SELECT s.seat_id FROM seatbooking s JOIN tripbooking t ON s.trip_booking_id = t.id WHERE t.trip_id = :tripId", nativeQuery = true)
+    List<String> findBookedSeatIdsByTripId(@Param("tripId") String tripId);
 }

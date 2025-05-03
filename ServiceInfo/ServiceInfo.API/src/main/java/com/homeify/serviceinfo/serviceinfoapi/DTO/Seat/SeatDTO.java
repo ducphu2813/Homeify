@@ -9,6 +9,6 @@ import lombok.Setter;
 public class SeatDTO {
 
     private String id;
-    private Transportation transportation;
+    private String transportationId;
     private String seatNumber;
 }

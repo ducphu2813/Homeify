@@ -30,5 +30,5 @@ public interface TripBookingRepository extends JpaRepository<TripBookingModel, S
             "JOIN tb.booking b " +
             "WHERE tb.tripId = :tripId AND b.id = :bookingId")
     TripBookingModel findByTripIdAndBookingId(@Param("tripId") String tripId,
-                                                    @Param("bookingId") String bookingId);
+                                              @Param("bookingId") String bookingId);
 }

@@ -13,4 +13,7 @@ public interface TripInfoRepository extends MongoRepository<TripInfoModel, Strin
 
     //tìm theo danh sách id
     List<TripInfoModel> findByIdIn(List<String> ids);
+
+    //tiìm theo departureCityId và arrivalCityId
+    List<TripInfoModel> findByDepartureCityIdAndArrivalCityId(String departureCityId, String arrivalCityId);
 }

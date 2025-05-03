@@ -3,6 +3,7 @@ package com.homeify.serviceinfo.UseCases;
 import com.homeify.serviceinfo.Adapter.TripAdapter;
 import com.homeify.serviceinfo.Entities.Trip;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TripUsecase {
@@ -36,5 +37,10 @@ public class TripUsecase {
     //lấy tat ca trip
     public List<Trip> getAllTrip() {
         return tripAdapter.getAllTrip();
+    }
+
+    //tìm theo departureCityId và arrivalCityId và >= departureDate
+    public List<Trip> findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(String departureCityId, String arrivalCityId, LocalDateTime departureDate) {
+        return tripAdapter.findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(departureCityId, arrivalCityId, departureDate);
     }
 }

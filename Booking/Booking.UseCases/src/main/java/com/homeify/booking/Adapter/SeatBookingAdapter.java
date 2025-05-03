@@ -30,4 +30,7 @@ public interface SeatBookingAdapter {
     //tìm các SeatBooking theo tripBookingId và List seatId
     List<SeatBooking> findByTripBookingIdAndSeatId(String tripBookingId, List<String> seatIds);
 
+    //lấy danh sách id seats đã đặt theo tripId
+    List<String> findBookedSeatIdsByTripId(String tripId);
+
 }

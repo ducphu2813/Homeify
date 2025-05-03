@@ -14,7 +14,8 @@ public class RouteValidator {
             "/api/auth/login",
             "/api/auth/register",
             "/api/**/login",
-            "/api/**/register"
+            "/api/**/register",
+            "/api/users/add"
     );
 
     //check coi request có phải là endpoint mở hay không

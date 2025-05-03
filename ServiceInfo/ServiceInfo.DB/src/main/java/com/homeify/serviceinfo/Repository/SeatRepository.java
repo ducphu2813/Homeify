@@ -13,4 +13,7 @@ public interface SeatRepository extends MongoRepository<SeatModel, String> {
 
     //lấy danh sách theo danh sách id
     List<SeatModel> findAllByIdIn(List<String> ids);
+
+    //lấy danh sách theo transportationId
+    List<SeatModel> findAllByTransportationId(String transportationId);
 }

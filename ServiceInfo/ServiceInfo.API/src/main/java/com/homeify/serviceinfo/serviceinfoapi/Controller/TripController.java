@@ -4,10 +4,15 @@ import com.homeify.serviceinfo.Entities.*;
 import com.homeify.serviceinfo.UseCases.TripUsecase;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Trip.SaveTripDTO;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Trip.TripDTO;
+import com.homeify.serviceinfo.serviceinfoapi.FeignClient.BookingClientInterface;
 import com.homeify.serviceinfo.serviceinfoapi.Mapper.TripDTOMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/trip")
@@ -16,9 +21,15 @@ public class TripController {
     private final TripUsecase tripUsecase;
     private final TripDTOMapper tripDTOMapper;
 
-    public TripController(TripUsecase tripUsecase, TripDTOMapper tripDTOMapper) {
+    //inject feign client của booking
+    private final BookingClientInterface bookingFeignClient;
+
+    public TripController(TripUsecase tripUsecase
+                            , TripDTOMapper tripDTOMapper
+                                , BookingClientInterface bookingFeignClient) {
         this.tripUsecase = tripUsecase;
         this.tripDTOMapper = tripDTOMapper;
+        this.bookingFeignClient = bookingFeignClient;
     }
 
     //get all
@@ -55,6 +66,10 @@ public class TripController {
 
         // thao tác db
         trip = tripUsecase.addTrip(trip);
+
+        if(trip == null) {
+            throw new RuntimeException("Error while adding trip");
+        }
 
         return tripDTOMapper.toTripDTO(trip);
 
@@ -95,8 +110,32 @@ public class TripController {
 
     //get by id
     @GetMapping("/get/{id}")
-    public TripDTO getById(@PathVariable String id) {
+    public Map<String, Object> getById(@PathVariable String id) {
         Trip trip = tripUsecase.findTripById(id);
-        return tripDTOMapper.toTripDTO(trip);
+
+        List<String> bookedSeats = bookingFeignClient.findBookedSeatIdsByTripId(id);
+
+        TripDTO tripDTO = tripDTOMapper.toTripDTO(trip);
+
+        //trả về 1 map có tripDTO và bookedSeats
+        Map<String, Object> response = new HashMap<>();
+        response.put("trip", tripDTO);
+        response.put("bookedSeats", bookedSeats);
+
+        return response;
+    }
+
+    //tìm theo departureCityId và arrivalCityId và >= departureDate
+    @GetMapping("/search")
+    public List<TripDTO> search(@RequestParam String departureCityId,
+                                @RequestParam String arrivalCityId,
+                                @RequestParam LocalDateTime departureAfter) {
+
+        List<Trip> trips = tripUsecase.findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(departureCityId, arrivalCityId, departureAfter);
+
+        //chuyển từ List<Trip> sang List<TripDTO>
+        //dùng mapper
+        return tripDTOMapper.toTripDTOs(trips);
+
     }
 }

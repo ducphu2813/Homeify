@@ -72,10 +72,15 @@ public class BookingController {
     //tìm theo id
     @GetMapping("/getById/{id}")
     public BookingDTO getById(@PathVariable String id) {
+
         Booking b = bookingUsecase.findBookingById(id);
         if (b == null) {
             return null;
         }
+
+        //lấy trip id từ trip booking
+        String tripId = b.getTripBookings().get(0).getTripId();
+
         return bookingDTOMapper.toBookingDTO(b);
     }
 

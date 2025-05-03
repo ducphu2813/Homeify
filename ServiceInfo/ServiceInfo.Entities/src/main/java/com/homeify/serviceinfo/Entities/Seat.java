@@ -8,7 +8,7 @@ import lombok.Setter;
 public class Seat {
 
     private String id;
-    private Transportation transportation;
+    private String transportationId;
     private String seatNumber;
 
 }

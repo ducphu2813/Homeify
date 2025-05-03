@@ -45,10 +45,10 @@ public class UseCasesConfig {
     }
 
     //đăng ký kafka producer adapter
-    @Bean
-    public KafkaProducerAdapter kafkaProducerAdapter (KafkaProducerAdapterImpl kafkaProducerAdapter){
-        return kafkaProducerAdapter;
-    }
+//    @Bean
+//    public KafkaProducerAdapter kafkaProducerAdapter (KafkaProducerAdapterImpl kafkaProducerAdapter){
+//        return kafkaProducerAdapter;
+//    }
     //---------------------
     ///--------------------
     ///--------------------
@@ -56,8 +56,11 @@ public class UseCasesConfig {
     //bean user use case
     @Bean
     public UserUsecase userUsecase (UsersAdapter usersAdapter
-                                    , KafkaProducerAdapter kafkaProducerAdapter){
-        return new UserUsecase(usersAdapter, kafkaProducerAdapter);
+//                                    , KafkaProducerAdapter kafkaProducerAdapter
+            ){
+        return new UserUsecase(usersAdapter
+//                , kafkaProducerAdapter
+        );
     }
 
     //bean auth use case

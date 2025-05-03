@@ -37,4 +37,9 @@ public class SeatBookingUsecase {
     public SeatBooking findSeatBookingById(String seatBookingId) {
         return seatBookingAdapter.findSeatBookingById(seatBookingId);
     }
+
+    //lấy danh sách id seats đã đặt theo tripId
+    public List<String> findBookedSeatIdsByTripId(String tripId) {
+        return seatBookingAdapter.findBookedSeatIdsByTripId(tripId);
+    }
 }

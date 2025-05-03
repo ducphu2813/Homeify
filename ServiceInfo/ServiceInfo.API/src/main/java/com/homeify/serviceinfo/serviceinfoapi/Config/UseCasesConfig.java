@@ -70,7 +70,9 @@ public class UseCasesConfig {
                                     , PickupAreaRepository pickupAreaRepository
                                     , PickupAreaMapper pickupAreaMapper
                                     , CityRepository cityRepository
-                                    , CityMapper cityMapper)
+                                    , CityMapper cityMapper
+                                    , SeatRepository seatRepository
+                                    , SeatMapper seatMapper)
     {
         return new TripAdapterImpl(tripRepository
                                     , tripMapper
@@ -81,7 +83,9 @@ public class UseCasesConfig {
                                     , pickupAreaRepository
                                     , pickupAreaMapper
                                     , cityRepository
-                                    , cityMapper);
+                                    , cityMapper
+                                    , seatRepository
+                                    , seatMapper);
     }
 
     //kafka adapter
