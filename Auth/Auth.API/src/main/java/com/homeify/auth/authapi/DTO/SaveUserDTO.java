@@ -10,7 +10,7 @@ public class SaveUserDTO {
 
     private String fullname;
 
-    private String username;
+    private String phoneNumber;
 
     private String password;
 

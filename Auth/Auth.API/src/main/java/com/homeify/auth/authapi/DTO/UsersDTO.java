@@ -13,9 +13,7 @@ public class UsersDTO {
 
     private String fullname;
 
-    private String username;
-
-    private String password;
+    private String phoneNumber;
 
     private String email;
 

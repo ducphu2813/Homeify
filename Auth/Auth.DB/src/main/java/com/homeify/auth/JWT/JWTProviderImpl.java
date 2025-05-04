@@ -27,16 +27,16 @@ public class JWTProviderImpl implements JWTProvider {
         }
     }
 
-    //hàm tạo token với username và danh sách role
+    //hàm tạo token với phoneNumber và danh sách role
     @Override
-    public String generateToken(String username, List<String> roles) {
+    public String generateToken(String phoneNumber, List<String> roles) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
         return Jwts.builder()
                 .claims()
                 .add(claims)
-                .subject(username)
+                .subject(phoneNumber)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // thời gian tồn tại của token (cho 60 phút)
                 .and()

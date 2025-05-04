@@ -90,10 +90,10 @@ public class UsersAdapterImpl implements UsersAdapter {
         return user;
     }
 
-    //tìm user theo username và password(dùng cho login, phải kèm role)
+    //tìm user theo phoneNumber và password(dùng cho login, phải kèm role)
     @Override
-    public Users findUserByUsernameAndPassword(String username, String password) {
-        UsersModel userModel = usersRepository.findByUsernameAndPassword(username, password);
+    public Users findUserByPhoneNumberAndPassword(String phoneNumber, String password) {
+        UsersModel userModel = usersRepository.findByPhoneNumberAndPassword(phoneNumber, password);
 
         //kiểm tra xem có tìm được user không
         if (userModel == null) {

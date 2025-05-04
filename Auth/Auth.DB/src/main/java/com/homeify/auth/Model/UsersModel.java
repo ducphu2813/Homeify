@@ -21,8 +21,8 @@ public class UsersModel {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "fullname")
     private String fullname;

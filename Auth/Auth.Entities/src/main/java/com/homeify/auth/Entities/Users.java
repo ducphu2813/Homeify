@@ -12,7 +12,7 @@ import java.util.Set;
 public class Users {
 
     private String id;
-    private String username;
+    private String phoneNumber;
     private String fullname;
     private String password;
     private String email;
