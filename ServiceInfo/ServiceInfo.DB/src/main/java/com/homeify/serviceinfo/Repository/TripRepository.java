@@ -1,6 +1,7 @@
 package com.homeify.serviceinfo.Repository;
 
 import com.homeify.serviceinfo.Model.TripModel;
+import com.homeify.serviceinfo.Repository.Custom.Interface.TripRepositoryCustom;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface TripRepository extends MongoRepository<TripModel, String> {
+public interface TripRepository extends MongoRepository<TripModel, String>, TripRepositoryCustom {
     //tìm id cuối cùng
     TripModel findTopByOrderByIdDesc();
 

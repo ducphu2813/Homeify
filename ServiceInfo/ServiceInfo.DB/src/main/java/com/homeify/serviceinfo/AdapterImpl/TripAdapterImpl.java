@@ -379,6 +379,20 @@ public class TripAdapterImpl implements TripAdapter {
     }
 
 
+    //cập nhật số ghế trống cho trip theo trip id, nhận vào trip id và số ghế trống và action "delete" hoặc "book"
+    @Override
+    @Transactional
+    public void updateAvailableSeats(String tripId, int seatCount, String action) {
+        //kiểm tra action
+        if(!action.equals("delete") && !action.equals("book")) {
+            throw new IllegalArgumentException("Action must be delete or book");
+        }
+
+        //cập nhật số ghế trống
+        tripRepository.updateAvailableSeats(tripId, seatCount, action);
+    }
+
+
 
 
     //tự động tạo id(TR00001, TR00002,...)

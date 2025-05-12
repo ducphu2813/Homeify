@@ -24,4 +24,7 @@ public interface TripAdapter {
 
     //tìm theo departureCityId và arrivalCityId và >= departureDate
     List<Trip> findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(String departureCityId, String arrivalCityId, LocalDateTime departureDate);
+
+    //cập nhật số ghế trống cho trip theo trip id, nhận vào trip id và số ghế trống và action "delete" hoặc "book"
+    void updateAvailableSeats(String tripId, int seatCount, String action);
 }

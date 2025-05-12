@@ -43,4 +43,9 @@ public class TripUsecase {
     public List<Trip> findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(String departureCityId, String arrivalCityId, LocalDateTime departureDate) {
         return tripAdapter.findByDepartureCityIdAndArrivalCityIdAndDepartureDateGreaterThanEqual(departureCityId, arrivalCityId, departureDate);
     }
+
+    //cập nhật cập nhật số ghế trống cho trip theo trip id, nhận vào trip id và số ghế trống và action "delete" hoặc "book"
+    public void updateAvailableSeats(String tripId, int seatCount, String action) {
+        tripAdapter.updateAvailableSeats(tripId, seatCount, action);
+    }
 }

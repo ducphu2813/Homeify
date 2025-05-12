@@ -31,9 +31,11 @@ public class BookingAdapterImpl implements BookingAdapter {
         String id = generateBookingId();
         bookingModel.setId(id);
 
-        bookingModel = bookingRepository.save(bookingModel);
+        bookingRepository.save(bookingModel);
 
-        return bookingMapper.toBooking(bookingModel);
+        BookingModel newBookingModel = bookingRepository.findById(id).orElse(null);
+
+        return bookingMapper.toBooking(newBookingModel);
     }
 
     @Override
