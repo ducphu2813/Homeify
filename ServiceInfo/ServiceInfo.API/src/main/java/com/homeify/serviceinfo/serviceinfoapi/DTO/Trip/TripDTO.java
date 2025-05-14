@@ -1,8 +1,8 @@
 package com.homeify.serviceinfo.serviceinfoapi.DTO.Trip;
 
-import com.homeify.serviceinfo.Entities.PickupArea;
-import com.homeify.serviceinfo.Entities.Transportation;
-import com.homeify.serviceinfo.Entities.TripInfo;
+import com.homeify.serviceinfo.serviceinfoapi.DTO.PickupArea.PickupAreaDTO;
+import com.homeify.serviceinfo.serviceinfoapi.DTO.Transportation.TransportationDTO;
+import com.homeify.serviceinfo.serviceinfoapi.DTO.TripInfo.TripInfoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 public class TripDTO {
 
     private String id;
-    private TripInfo tripInfo;
-    private Transportation transportation;
+    private TripInfoDTO tripInfo;
+    private TransportationDTO transportation;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
-    private PickupArea pickupArea;
+    private PickupAreaDTO pickupArea;
     private Integer availableSeats;
     private String status;
     private LocalDateTime createdAt;

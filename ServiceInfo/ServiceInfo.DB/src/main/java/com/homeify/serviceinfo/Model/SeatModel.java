@@ -1,22 +1,29 @@
 package com.homeify.serviceinfo.Model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "seats")
+@Table(name = "seats")
+@Entity
 public class SeatModel {
 
     @Id
+    @Column(name = "id")
     private String id;
-    private String transportationId;
+
+    //khóa nghoại đến bảng transportation
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transportation_id")
+    private TransportationModel transportation;
+
+    @Column(name = "seat_number")
     private String seatNumber;
 
 }

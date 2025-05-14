@@ -4,19 +4,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "tripinfos")
+@Entity
+@Table(name = "trip_infos")
 public class TripInfoModel {
 
     @Id
+    @Column(name = "id")
     private String id;
-    private String departureCityId;
-    private String arrivalCityId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departure_city_id")
+    private CityModel departureCity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arrival_city_id")
+    private CityModel arrivalCity;
+
+    @Column(name = "status")
     private String status;
 }

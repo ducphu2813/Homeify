@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CityDTOMapper.class})
 public interface PickupAreaDTOMapper {
 
     //chuyển từ PickupArea sang PickupAreaDTO

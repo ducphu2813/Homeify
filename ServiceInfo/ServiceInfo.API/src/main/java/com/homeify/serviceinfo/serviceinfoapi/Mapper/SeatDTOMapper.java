@@ -4,6 +4,7 @@ import com.homeify.serviceinfo.Entities.Seat;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Seat.SaveSeatDTO;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Seat.SeatDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

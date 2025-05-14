@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.homeify.serviceinfo"})
-@EnableMongoRepositories(basePackages = "com.homeify.serviceinfo.Repository")
+@EnableJpaRepositories(basePackages = "com.homeify.serviceinfo.Repository")
 @EntityScan(basePackages = {"com.homeify.serviceinfo.Model"})
 @EnableFeignClients
 public class Application {

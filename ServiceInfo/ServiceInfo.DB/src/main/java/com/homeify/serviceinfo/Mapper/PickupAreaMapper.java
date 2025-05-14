@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {CityMapper.class})
 public interface PickupAreaMapper {
 
     //chuyển từ PickupAreaModel sang PickupArea

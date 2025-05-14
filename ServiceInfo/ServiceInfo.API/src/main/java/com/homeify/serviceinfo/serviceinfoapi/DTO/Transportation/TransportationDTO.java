@@ -1,7 +1,6 @@
 package com.homeify.serviceinfo.serviceinfoapi.DTO.Transportation;
 
 
-import com.homeify.serviceinfo.Entities.Seat;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Seat.SeatDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +16,5 @@ public class TransportationDTO {
     private String plateNumber;
     private Integer capacity;
 
-    private List<Seat> seats;
+    private List<SeatDTO> seats;
 }

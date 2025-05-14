@@ -43,20 +43,18 @@ public class UseCasesConfig {
     @Bean
     public TripInfoAdapter tripInfoAdapter (TripInfoRepository tripInfoRepository
                                     , TripInfoMapper tripInfoMapper
-                                    , CityRepository cityRepository
-                                    , CityMapper cityMapper)
+    )
     {
-        return new TripInfoAdapterImpl(tripInfoRepository, tripInfoMapper, cityRepository, cityMapper);
+        return new TripInfoAdapterImpl(tripInfoRepository, tripInfoMapper);
     }
 
     //adapter của pickup area
     @Bean
     public PickupAreaAdapter pickupAreaAdapter (PickupAreaRepository pickupAreaRepository
                                     , PickupAreaMapper pickupAreaMapper
-                                    , CityRepository cityRepository
-                                    , CityMapper cityMapper)
+    )
     {
-        return new PickupAreaAdapterImpl(pickupAreaRepository, pickupAreaMapper, cityRepository, cityMapper);
+        return new PickupAreaAdapterImpl(pickupAreaRepository, pickupAreaMapper);
     }
 
     //adapter của trip
@@ -64,28 +62,12 @@ public class UseCasesConfig {
     public TripAdapter tripAdapter (TripRepository tripRepository
                                     , TripMapper tripMapper
                                     , TripInfoRepository tripInfoRepository
-                                    , TripInfoMapper tripInfoMapper
-                                    , TransportationRepository transportationRepository
-                                    , TransportationMapper transportationMapper
-                                    , PickupAreaRepository pickupAreaRepository
-                                    , PickupAreaMapper pickupAreaMapper
-                                    , CityRepository cityRepository
-                                    , CityMapper cityMapper
-                                    , SeatRepository seatRepository
-                                    , SeatMapper seatMapper)
+    )
     {
         return new TripAdapterImpl(tripRepository
                                     , tripMapper
                                     , tripInfoRepository
-                                    , tripInfoMapper
-                                    , transportationRepository
-                                    , transportationMapper
-                                    , pickupAreaRepository
-                                    , pickupAreaMapper
-                                    , cityRepository
-                                    , cityMapper
-                                    , seatRepository
-                                    , seatMapper);
+        );
     }
 
     //kafka adapter

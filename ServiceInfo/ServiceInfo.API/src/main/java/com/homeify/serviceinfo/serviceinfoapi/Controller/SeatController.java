@@ -40,6 +40,11 @@ public class SeatController {
 
         Seat seat = seatDTOMapper.toSeat(seatDTO);
 
+        Transportation transportation = new Transportation();
+        transportation.setId(seatDTO.getTransportationId());
+
+        seat.setTransportation(transportation);
+
         seat = seatUsecase.addSeat(seat);
 
         return seatDTOMapper.toSeatDTO(seat);

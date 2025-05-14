@@ -6,6 +6,7 @@ import com.homeify.serviceinfo.Entities.Transportation;
 import com.homeify.serviceinfo.Mapper.SeatMapper;
 import com.homeify.serviceinfo.Mapper.TransportationMapper;
 import com.homeify.serviceinfo.Model.SeatModel;
+import com.homeify.serviceinfo.Model.TransportationModel;
 import com.homeify.serviceinfo.Repository.SeatRepository;
 import com.homeify.serviceinfo.Repository.TransportationRepository;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,11 @@ public class SeatAdapterImpl implements SeatAdapter {
         //tự động tạo id
         seatModel.setId(generateId());
 
-        //lưu vào db
-        seatModel.setTransportationId(seat.getTransportationId());
+        TransportationModel transportationModel = new TransportationModel();
+        transportationModel.setId(seat.getTransportation().getId());
+
+        seatModel.setTransportation(transportationModel);
+
         seatModel = seatRepository.save(seatModel);
 
         //dùng mapper chuyển từ model sang entity
@@ -70,8 +74,11 @@ public class SeatAdapterImpl implements SeatAdapter {
         //set id cũ cho seatModel
         seatModel.setId(seatId);
 
-        //set id transportation
-        seatModel.setTransportationId(seat.getTransportationId());
+        //set transportation
+        TransportationModel transportationModel = new TransportationModel();
+        transportationModel.setId(seat.getTransportation().getId());
+
+        seatModel.setTransportation(transportationModel);
 
         seatModel = seatRepository.save(seatModel);
 

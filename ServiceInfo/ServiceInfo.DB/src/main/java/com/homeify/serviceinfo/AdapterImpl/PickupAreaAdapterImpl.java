@@ -21,17 +21,11 @@ public class PickupAreaAdapterImpl implements PickupAreaAdapter {
     private final PickupAreaRepository pickupAreaRepository;
     private final PickupAreaMapper pickupAreaMapper;
 
-    private final CityRepository cityRepository;
-    private final CityMapper cityMapper;
-
     public PickupAreaAdapterImpl(PickupAreaRepository pickupAreaRepository
                                 , PickupAreaMapper pickupAreaMapper
-                                , CityRepository cityRepository
-                                , CityMapper cityMapper) {
+    ) {
         this.pickupAreaRepository = pickupAreaRepository;
         this.pickupAreaMapper = pickupAreaMapper;
-        this.cityRepository = cityRepository;
-        this.cityMapper = cityMapper;
     }
 
 
@@ -43,9 +37,6 @@ public class PickupAreaAdapterImpl implements PickupAreaAdapter {
 
         //set id
         pickupAreaModel.setId(generateId());
-
-        //set id của city
-        pickupAreaModel.setCityId(pickupArea.getCity().getId());
 
         //lưu vào db
         pickupAreaRepository.save(pickupAreaModel);
@@ -63,9 +54,6 @@ public class PickupAreaAdapterImpl implements PickupAreaAdapter {
         //set id
         pickupAreaModel.setId(pickupAreaId);
 
-        //set id của city
-        pickupAreaModel.setCityId(pickupArea.getCity().getId());
-
         //lưu vào db
         pickupAreaRepository.save(pickupAreaModel);
 
@@ -79,39 +67,16 @@ public class PickupAreaAdapterImpl implements PickupAreaAdapter {
         pickupAreaRepository.deleteById(pickupAreaId);
     }
 
+
     @Override
     public List<PickupArea> getAllPickupArea() {
         //tìm theo id
         List<PickupAreaModel> pickupAreaModels = pickupAreaRepository.findAll();
 
-        //lấy tất cả cityId từ pickupAreaModels
-        List<String> cityIds = pickupAreaModels.stream()
-                .map(PickupAreaModel::getCityId)
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-
-        //lấy tất cả city từ cityIds
-        List<City> cities = cityRepository.findAllById(cityIds)
-                .stream()
-                .map(cityMapper::toCity)
-                .toList();
-
-        //chuyển từ PickupAreaModel sang PickupArea
-        return pickupAreaModels.stream()
-                .map(pickupAreaModel -> {
-                    PickupArea pickupArea = pickupAreaMapper.toPickupArea(pickupAreaModel);
-
-                    //set city
-                    pickupArea.setCity(cities.stream()
-                            .filter(city -> city.getId().equals(pickupAreaModel.getCityId()))
-                            .findFirst()
-                            .orElse(null));
-
-                    return pickupArea;
-                })
-                .toList();
+        //dùng mapper
+        return pickupAreaMapper.toPickupArea(pickupAreaModels);
     }
+
 
     @Override
     public PickupArea findPickupAreaById(String pickupAreaId) {
@@ -122,16 +87,8 @@ public class PickupAreaAdapterImpl implements PickupAreaAdapter {
             return null;
         }
 
-        //lấy city
-        CityModel cityModel = cityRepository.findById(pickupAreaModel.getCityId()).orElse(null);
-
-        //chuyển từ PickupAreaModel sang PickupArea
-        PickupArea pickupArea = pickupAreaMapper.toPickupArea(pickupAreaModel);
-
-        //set city
-        pickupArea.setCity(cityMapper.toCity(cityModel));
-
-        return pickupArea;
+        //dùng mapper
+        return pickupAreaMapper.toPickupArea(pickupAreaModel);
     }
 
     //tự động tạo id(PA001, PA002, ...)

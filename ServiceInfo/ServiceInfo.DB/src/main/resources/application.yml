@@ -1,5 +1,13 @@
+#cau hinh ket noi db
 spring:
-  data:
-    mongodb:
-      uri: mongodb://admin:password@mongo:27017/sidb?authSource=admin
-      database: sidb
+  datasource:
+    url: jdbc:postgresql://postgres:5432/tripdb
+    username: postgres
+    password: 123456
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update

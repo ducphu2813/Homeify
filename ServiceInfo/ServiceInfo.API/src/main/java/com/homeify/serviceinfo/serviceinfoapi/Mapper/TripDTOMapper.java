@@ -1,13 +1,14 @@
 package com.homeify.serviceinfo.serviceinfoapi.Mapper;
 
 import com.homeify.serviceinfo.Entities.Trip;
+import com.homeify.serviceinfo.Mapper.PickupAreaMapper;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Trip.SaveTripDTO;
 import com.homeify.serviceinfo.serviceinfoapi.DTO.Trip.TripDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TripInfoDTOMapper.class, TransportationDTOMapper.class, PickupAreaMapper.class})
 public interface TripDTOMapper {
 
     //chuyển từ Trip sang TripDTO

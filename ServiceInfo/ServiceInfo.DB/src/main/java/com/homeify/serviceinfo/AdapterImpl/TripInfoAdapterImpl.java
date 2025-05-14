@@ -22,17 +22,11 @@ public class TripInfoAdapterImpl implements TripInfoAdapter {
     private final TripInfoRepository tripInfoRepository;
     private final TripInfoMapper tripInfoMapper;
 
-    private final CityRepository cityRepository;
-    private final CityMapper cityMapper;
-
     public TripInfoAdapterImpl(TripInfoRepository tripInfoRepository
                                 , TripInfoMapper tripInfoMapper
-                                , CityRepository cityRepository
-                                , CityMapper cityMapper) {
+    ) {
         this.tripInfoRepository = tripInfoRepository;
         this.tripInfoMapper = tripInfoMapper;
-        this.cityRepository = cityRepository;
-        this.cityMapper = cityMapper;
     }
 
     @Override
@@ -43,10 +37,6 @@ public class TripInfoAdapterImpl implements TripInfoAdapter {
 
         //set id
         tripInfoModel.setId(generateId());
-
-        //set id của city
-        tripInfoModel.setArrivalCityId(tripInfo.getArrivalCity().getId());
-        tripInfoModel.setDepartureCityId(tripInfo.getDepartureCity().getId());
 
         //lưu vào db
         tripInfoRepository.save(tripInfoModel);
@@ -71,10 +61,6 @@ public class TripInfoAdapterImpl implements TripInfoAdapter {
         //set id cũ của tripInfo
         tripInfoModel.setId(tripInfoId);
 
-        //set id của city
-        tripInfoModel.setArrivalCityId(tripInfo.getArrivalCity().getId());
-        tripInfoModel.setDepartureCityId(tripInfo.getDepartureCity().getId());
-
         //lưu vào db
         tripInfoRepository.save(tripInfoModel);
 
@@ -89,46 +75,18 @@ public class TripInfoAdapterImpl implements TripInfoAdapter {
         tripInfoRepository.deleteById(tripInfoId);
     }
 
+
     @Override
     public List<TripInfo> getAllTripInfo() {
         List<TripInfoModel> tripInfoModelList = tripInfoRepository.findAll();
 
-        //lấy tất cả arrivalCityId và departureCityId
-        List<String> cityIds = tripInfoModelList.stream()
-                .flatMap(tripInfoModel -> Stream.of(
-                        tripInfoModel.getArrivalCityId(),
-                        tripInfoModel.getDepartureCityId()
-                ))
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-
-        //lấy tất cả CityModel tương ứng
-        List<CityModel> cityModels = cityRepository.findAllByIdIn(cityIds);
-
-        //chuyển từ TripInfoModel sang TripInfo
-        return tripInfoModelList.stream()
-                .map(tripInfoModel -> {
-                    TripInfo tripInfo = tripInfoMapper.toTripInfo(tripInfoModel);
-
-                    //set arrivalCity và departureCity
-                    tripInfo.setArrivalCity(cityMapper.toCity(cityModels.stream()
-                            .filter(cityModel -> cityModel.getId().equals(tripInfoModel.getArrivalCityId()))
-                            .findFirst()
-                            .orElse(null)));
-
-                    tripInfo.setDepartureCity(cityMapper.toCity(cityModels.stream()
-                            .filter(cityModel -> cityModel.getId().equals(tripInfoModel.getDepartureCityId()))
-                            .findFirst()
-                            .orElse(null)));
-
-                    return tripInfo;
-                })
-                .toList();
+        //dùng mapper
+        return tripInfoMapper.toTripInfo(tripInfoModelList);
     }
 
     @Override
     public TripInfo findTripInfoById(String tripInfoId) {
+
         //tìm theo id
         TripInfoModel tripInfoModel = tripInfoRepository.findById(tripInfoId).orElse(null);
 
@@ -136,27 +94,8 @@ public class TripInfoAdapterImpl implements TripInfoAdapter {
             return null;
         }
 
-        //lấy tất cả cityId
-        List<String> cityIds = List.of(tripInfoModel.getArrivalCityId(), tripInfoModel.getDepartureCityId());
-
-        //lấy tất cả CityModel tương ứng
-        List<CityModel> cityModels = cityRepository.findAllByIdIn(cityIds);
-
-        //chuyển từ TripInfoModel sang TripInfo
-        TripInfo tripInfo = tripInfoMapper.toTripInfo(tripInfoModel);
-
-        //set arrivalCity và departureCity
-        tripInfo.setArrivalCity(cityMapper.toCity(cityModels.stream()
-                .filter(cityModel -> cityModel.getId().equals(tripInfoModel.getArrivalCityId()))
-                .findFirst()
-                .orElse(null)));
-
-        tripInfo.setDepartureCity(cityMapper.toCity(cityModels.stream()
-                .filter(cityModel -> cityModel.getId().equals(tripInfoModel.getDepartureCityId()))
-                .findFirst()
-                .orElse(null)));
-
-        return tripInfo;
+        //dùng mapper
+        return tripInfoMapper.toTripInfo(tripInfoModel);
     }
 
     //tự động tạo id(CH0001, CH0002, ...)

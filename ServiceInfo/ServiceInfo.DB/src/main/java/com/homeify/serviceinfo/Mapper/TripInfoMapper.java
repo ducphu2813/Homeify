@@ -6,7 +6,7 @@ import com.homeify.serviceinfo.Model.TripInfoModel;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {CityMapper.class})
 public interface TripInfoMapper {
 
     //chuyển từ TripInfoModel sang TripInfo
