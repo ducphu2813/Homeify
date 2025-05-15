@@ -31,4 +31,16 @@ public interface TripBookingRepository extends JpaRepository<TripBookingModel, S
             "WHERE tb.tripId = :tripId AND b.id = :bookingId")
     TripBookingModel findByTripIdAndBookingId(@Param("tripId") String tripId,
                                               @Param("bookingId") String bookingId);
+
+    //đếm số ghế được đặt theo trip booking id
+    @Query("SELECT COUNT(sb) FROM SeatBookingModel sb " +
+            "JOIN sb.tripBooking tb " +
+            "WHERE tb.id = :tripBookingId")
+    int countSeatsByTripBookingId(@Param("tripBookingId") String tripBookingId);
+
+    //tìm theo booking id
+    @Query("SELECT tb FROM TripBookingModel tb " +
+            "JOIN tb.booking b " +
+            "WHERE b.id = :bookingId")
+    List<TripBookingModel> findByBookingId(@Param("bookingId") String bookingId);
 }

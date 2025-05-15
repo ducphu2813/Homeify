@@ -11,9 +11,7 @@ import com.homeify.booking.bookingapi.Mapper.BookingDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +102,7 @@ public class BookingController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            Booking booking = bookingUsecase.bookTrip(bookingDTO.getTripId(), bookingDTO.getUserId(), bookingDTO.getSeatId());
+            Booking booking = bookingUsecase.bookTrip(bookingDTO.getTripId(), bookingDTO.getUserId(), bookingDTO.getSeatId(), bookingDTO.getSeatPrice());
 
             //book xong thì lấy số lượng ghế đã đặt đưa cho Trip Service để cập nhật số ghế còn trống
             //lấy số ghế đã đặt(đếm qua từng TripBooking trong booking)
@@ -138,7 +136,7 @@ public class BookingController {
     @PostMapping("/deleteSeat")
     public ResponseEntity<?> deleteSeat(@RequestBody CreateBookingDTO bookingDTO) {
         try {
-            Booking booking = bookingUsecase.removeSeatsFromTrip(bookingDTO.getTripId(), bookingDTO.getUserId(), bookingDTO.getSeatId());
+            Booking booking = bookingUsecase.removeSeatsFromTrip(bookingDTO.getTripId(), bookingDTO.getUserId(), bookingDTO.getSeatId(), bookingDTO.getSeatPrice());
 
             //xóa ghế xong thì lấy số ghế xóa đưa cho Trip Service để cập nhật số ghế còn trống
 

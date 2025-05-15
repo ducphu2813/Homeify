@@ -53,7 +53,7 @@ public class BookingUsecase {
     }
 
     //đặt vé
-    public Booking bookTrip(String tripId, String userId, List<String> seatIds) {
+    public Booking bookTrip(String tripId, String userId, List<String> seatIds, Long seatPrice) {
 
         //kiểm tra người dùng đã có đặt chuyến này chưa
         Booking booking = bookingAdapter.findBookingByUserIdAndTripId(userId, tripId);
@@ -74,15 +74,14 @@ public class BookingUsecase {
             booking.setTotalAmount(0L);
             booking = bookingAdapter.addBooking(booking);
 
+            //tạo mới booking và gọi event kafka booking expired
+
             tripBooking = new TripBooking();
             tripBooking.setBooking(booking);
             tripBooking.setTripId(tripId);
             tripBooking.setAmount(0L);
             tripBooking = tripBookingAdapter.addTripBooking(tripBooking);
         }
-
-        //sau bước này có nghĩa là ta đã tìm được đúng tripBooking và booking
-        //thì có thể cập nhật amount và total amount cho tripBooking và booking
 
         //kiếm tra ghế ngồi đã được đặt chưa
         List<TripBooking> bookedTrips = tripBookingAdapter.findTripBookingsByTripId(tripId);
@@ -107,11 +106,26 @@ public class BookingUsecase {
             seatBookings.add(seatBookingAdapter.addSeatBooking(seatBooking));
         }
 
+        //sau bước này có nghĩa là ta đã tìm được đúng tripBooking và booking
+        //thì có thể cập nhật amount và total amount cho tripBooking và booking
+        //cập nhật tiền của tripBooking
+        int tripBookingSeats = tripBookingAdapter.countSeatsByTripBookingId(tripBooking.getId());
+        tripBooking.setAmount(tripBookingSeats * seatPrice);
+        tripBookingAdapter.updateTripBooking(tripBooking, tripBooking.getId());
+
+        //cập nhật tiền của booking
+        List<TripBooking> tripBookings = tripBookingAdapter.findTripBookingsByBookingId(booking.getId());
+        Long totalAmount = tripBookings.stream()
+                .map(TripBooking::getAmount)
+                .reduce(0L, Long::sum);
+        booking.setTotalAmount(totalAmount);
+        bookingAdapter.updateBooking(booking, booking.getId());
+
         return bookingAdapter.findBookingById(booking.getId());
     }
 
     //xóa ghế khỏi booking
-    public Booking removeSeatsFromTrip(String tripId, String userId, List<String> seatIds)
+    public Booking removeSeatsFromTrip(String tripId, String userId, List<String> seatIds, Long seatPrice)
     {
         // Tìm Booking và TripBooking
         Booking booking = bookingAdapter.findBookingByUserIdAndTripId(userId, tripId);
@@ -135,7 +149,19 @@ public class BookingUsecase {
             seatBookingAdapter.deleteSeatBooking(seat.getId());
         }
 
-        // Sau khi xóa, có thể cập nhật lại amount nếu cần (tuỳ bạn xử lý)
+        // Sau khi xóa, có thể cập nhật lại amount và totalAmount cho TripBooking và Booking
+        //cập nhật tiền của tripBooking
+        int tripBookingSeats = tripBookingAdapter.countSeatsByTripBookingId(tripBooking.getId());
+        tripBooking.setAmount(tripBookingSeats * seatPrice);
+        tripBookingAdapter.updateTripBooking(tripBooking, tripBooking.getId());
+
+        //cập nhật tiền của booking
+        List<TripBooking> tripBookings = tripBookingAdapter.findTripBookingsByBookingId(booking.getId());
+        Long totalAmount = tripBookings.stream()
+                .map(TripBooking::getAmount)
+                .reduce(0L, Long::sum);
+        booking.setTotalAmount(totalAmount);
+        bookingAdapter.updateBooking(booking, booking.getId());
 
         // Nếu không còn ghế nào => xóa luôn TripBooking? (tuỳ yêu cầu)
 //        List<SeatBooking> remainingSeats = seatBookingAdapter.findSeatBookingsByTripBookingId(tripBooking.getId());

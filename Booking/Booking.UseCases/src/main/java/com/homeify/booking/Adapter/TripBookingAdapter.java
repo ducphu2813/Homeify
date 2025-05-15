@@ -26,4 +26,10 @@ public interface TripBookingAdapter {
 
     // Tìm TripBooking theo tripId và bookingId
     TripBooking findTripBookingsByTripIdAndBookingId(String tripId, String bookingId);
+
+    //đếm số ghế được đặt theo trip booking id
+    int countSeatsByTripBookingId(String tripBookingId);
+
+    //tìm theo booking id
+    List<TripBooking> findTripBookingsByBookingId(String bookingId);
 }

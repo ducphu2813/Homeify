@@ -12,4 +12,5 @@ public class CreateBookingDTO {
     private String tripId;
     private String userId;
     private List<String> seatId;
+    private Long seatPrice;
 }

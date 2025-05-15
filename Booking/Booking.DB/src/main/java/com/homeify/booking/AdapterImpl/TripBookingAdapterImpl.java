@@ -65,15 +65,17 @@ public class TripBookingAdapterImpl implements TripBookingAdapter {
         if (tripBookingModel == null) {
             return null;
         }
+        String bookingId = tripBookingModel.getBooking().getId();
 
         //dùng mapper
         tripBookingModel = tripBookingMapper.toTripBookingModel(tripBooking);
+        tripBookingModel.setSeatBookings(null);
 
         //set lại id cũ
         tripBookingModel.setId(id);
 
         BookingModel booking = new BookingModel();
-        booking.setId(tripBooking.getBooking().getId());
+        booking.setId(bookingId);
         tripBookingModel.setBooking(booking);
 
         tripBookingModel = tripBookingRepository.save(tripBookingModel);
@@ -134,7 +136,28 @@ public class TripBookingAdapterImpl implements TripBookingAdapter {
         //dùng mapper
         TripBooking tripBooking = tripBookingMapper.toTripBooking(tripBookingModels);
 
+        Booking booking = bookingMapper.toBooking(tripBookingModels.getBooking());
+
+        tripBooking.setBooking(booking);
+
         return tripBooking;
+    }
+
+    //đếm số ghế được đặt theo trip booking id
+    @Override
+    public int countSeatsByTripBookingId(String tripBookingId) {
+        return tripBookingRepository.countSeatsByTripBookingId(tripBookingId);
+    }
+
+    //tìm theo booking id
+    @Override
+    public List<TripBooking> findTripBookingsByBookingId(String bookingId) {
+        List<TripBookingModel> tripBookingModels = tripBookingRepository.findByBookingId(bookingId);
+
+        //dùng mapper
+        List<TripBooking> tripBookings = tripBookingMapper.toTripBookings(tripBookingModels);
+
+        return tripBookings;
     }
 
 
