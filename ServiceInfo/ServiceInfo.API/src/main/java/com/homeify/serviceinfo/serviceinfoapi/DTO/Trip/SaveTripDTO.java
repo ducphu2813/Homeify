@@ -16,6 +16,7 @@ public class SaveTripDTO {
     private LocalDateTime arrivalTime;
     private String pickupAreaId;
     private Integer availableSeats;
+    private Long seatPrice;
     private String status;
     private LocalDateTime createdAt;
 }

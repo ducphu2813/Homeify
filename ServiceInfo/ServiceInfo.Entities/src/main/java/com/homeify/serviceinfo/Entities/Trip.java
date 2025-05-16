@@ -16,6 +16,7 @@ public class Trip {
     private LocalDateTime arrivalTime;
     private PickupArea pickupArea;
     private Integer availableSeats;
+    private Long seatPrice;
     private String status;
     private LocalDateTime createdAt;
 }

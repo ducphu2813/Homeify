@@ -44,6 +44,9 @@ public class TripModel {
     @Column(name = "available_seats")
     private Integer availableSeats;
 
+    @Column(name = "seat_price")
+    private Long seatPrice;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

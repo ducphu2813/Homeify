@@ -19,6 +19,7 @@ public class TripDTO {
     private LocalDateTime arrivalTime;
     private PickupAreaDTO pickupArea;
     private Integer availableSeats;
+    private Long seatPrice;
     private String status;
     private LocalDateTime createdAt;
 }
