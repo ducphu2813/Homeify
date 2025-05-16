@@ -48,18 +48,18 @@ public class BookingUsecase {
     public void deleteBooking(String bookingId) {
 
         // lấy thông tin booking để gửi sự kiện
-        List<Object[]> object = bookingAdapter.findTripIdAndSeatCountByBookingId(bookingId);
-
-        String tripId = (String) object.get(0)[0];
-        int seatCount = (int) object.get(0)[1];
-
-        // gửi sự kiện xóa booking
-        try {
-            bookingKafkaProducer.sendDeleteBookingEvent(tripId, seatCount);
-            System.out.println("Sent message to topic booking-delete-topic: " + tripId + ", " + seatCount);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send Kafka message", e);
-        }
+//        List<Object[]> object = bookingAdapter.findTripIdAndSeatCountByBookingId(bookingId);
+//
+//        String tripId = (String) object.get(0)[0];
+//        int seatCount = (int) object.get(0)[1];
+//
+//        // gửi sự kiện xóa booking
+//        try {
+//            bookingKafkaProducer.sendDeleteBookingEvent(tripId, seatCount);
+//            System.out.println("Sent message to topic booking-delete-topic: " + tripId + ", " + seatCount);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to send Kafka message", e);
+//        }
 
         bookingAdapter.deleteBooking(bookingId);
     }
