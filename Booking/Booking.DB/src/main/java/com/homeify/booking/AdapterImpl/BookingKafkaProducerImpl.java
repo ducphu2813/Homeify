@@ -31,4 +31,17 @@ public class BookingKafkaProducerImpl implements BookingKafkaProducer {
             throw new RuntimeException("Failed to send Kafka message", e);
         }
     }
+
+    @Override
+    public void sendDeleteBookingEvent(String tripId, int seatCount) {
+        // Gửi dữ liệu vào topic
+        try {
+            kafkaTemplate.send("booking-delete-topic", tripId, seatCount);
+            System.out.println("Sent message to topic booking-delete-topic: " + tripId + ", " + seatCount);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send Kafka message", e);
+        }
+    }
+
+
 }

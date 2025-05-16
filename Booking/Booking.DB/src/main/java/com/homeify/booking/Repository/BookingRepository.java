@@ -27,4 +27,14 @@ public interface BookingRepository extends JpaRepository<BookingModel, String> {
     @Query("SELECT b FROM BookingModel b JOIN b.tripBookings tb WHERE b.userId = :userId AND tb.tripId = :tripId")
     BookingModel findBookingByUserIdAndTripId(@Param("userId") String userId, @Param("tripId") String tripId);
 
+    //lấy trip id và số ghế dã đặt theo booking id
+    @Query(value = """
+        SELECT tb.trip_id, COUNT(sb.id) AS seat_count
+        FROM tripbooking tb
+        JOIN seatbooking sb ON tb.id = sb.trip_booking_id
+        WHERE tb.booking_id = :bookingId
+        GROUP BY tb.trip_id
+    """, nativeQuery = true)
+    List<Object[]> findTripIdAndSeatCountByBookingId(@Param("bookingId") String bookingId);
+
 }

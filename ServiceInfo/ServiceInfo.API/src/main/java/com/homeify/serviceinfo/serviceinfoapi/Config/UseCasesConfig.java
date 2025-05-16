@@ -71,10 +71,10 @@ public class UseCasesConfig {
     }
 
     //kafka adapter
-//    @Bean
-//    public KafkaEventConsumerAdapter kafkaEventConsumerAdapter (KafkaEventConsumerAdapterImpl kafkaEventConsumerAdapterImpl){
-//        return kafkaEventConsumerAdapterImpl;
-//    }
+    @Bean
+    public KafkaEventConsumerAdapter kafkaEventConsumerAdapter (KafkaEventConsumerAdapterImpl kafkaEventConsumerAdapterImpl){
+        return kafkaEventConsumerAdapterImpl;
+    }
 
 
 

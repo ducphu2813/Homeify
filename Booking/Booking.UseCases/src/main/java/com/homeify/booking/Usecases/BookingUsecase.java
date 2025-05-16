@@ -1,11 +1,13 @@
 package com.homeify.booking.Usecases;
 
 import com.homeify.booking.Adapter.BookingAdapter;
+import com.homeify.booking.Adapter.BookingKafkaProducer;
 import com.homeify.booking.Adapter.SeatBookingAdapter;
 import com.homeify.booking.Adapter.TripBookingAdapter;
 import com.homeify.booking.Entities.Booking;
 import com.homeify.booking.Entities.SeatBooking;
 import com.homeify.booking.Entities.TripBooking;
+import com.homeify.booking.Event.BookingExpireEvent;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,12 +21,17 @@ public class BookingUsecase {
 
     private final SeatBookingAdapter seatBookingAdapter;
 
+    private final BookingKafkaProducer bookingKafkaProducer;
+
     public BookingUsecase(BookingAdapter bookingAdapter
                             , TripBookingAdapter tripBookingAdapter
-                            , SeatBookingAdapter seatBookingAdapter) {
+                            , SeatBookingAdapter seatBookingAdapter
+                            , BookingKafkaProducer bookingKafkaProducer
+    ) {
         this.bookingAdapter = bookingAdapter;
         this.tripBookingAdapter = tripBookingAdapter;
         this.seatBookingAdapter = seatBookingAdapter;
+        this.bookingKafkaProducer = bookingKafkaProducer;
     }
 
     //teh6m booking
@@ -39,6 +46,21 @@ public class BookingUsecase {
 
     //xóa booking
     public void deleteBooking(String bookingId) {
+
+        // lấy thông tin booking để gửi sự kiện
+        List<Object[]> object = bookingAdapter.findTripIdAndSeatCountByBookingId(bookingId);
+
+        String tripId = (String) object.get(0)[0];
+        int seatCount = (int) object.get(0)[1];
+
+        // gửi sự kiện xóa booking
+        try {
+            bookingKafkaProducer.sendDeleteBookingEvent(tripId, seatCount);
+            System.out.println("Sent message to topic booking-delete-topic: " + tripId + ", " + seatCount);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send Kafka message", e);
+        }
+
         bookingAdapter.deleteBooking(bookingId);
     }
 
@@ -50,6 +72,11 @@ public class BookingUsecase {
     //tìm theo id
     public Booking findBookingById(String bookingId) {
         return bookingAdapter.findBookingById(bookingId);
+    }
+
+    //tìm theo userId
+    public List<Booking> findBookingsByUserId(String userId) {
+        return bookingAdapter.findBookingsByUserId(userId);
     }
 
     //đặt vé
@@ -74,7 +101,13 @@ public class BookingUsecase {
             booking.setTotalAmount(0L);
             booking = bookingAdapter.addBooking(booking);
 
-            //tạo mới booking và gọi event kafka booking expired
+            //gửi bookingExpireEvent lên kafka
+            try {
+                bookingKafkaProducer.sendBookingExpireEvent(booking);
+                System.out.println("Sent message to topic booking-expire-topic with booking id: " + booking.getId());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to send Kafka message", e);
+            }
 
             tripBooking = new TripBooking();
             tripBooking.setBooking(booking);

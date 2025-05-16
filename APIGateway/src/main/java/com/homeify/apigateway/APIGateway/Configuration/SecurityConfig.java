@@ -23,6 +23,9 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
                 // ...
+                //disable cors
+                .cors(cors -> cors.disable())
+                //disable csrf
                 .csrf(csrf -> csrf.disable());
         return http.build();
     }

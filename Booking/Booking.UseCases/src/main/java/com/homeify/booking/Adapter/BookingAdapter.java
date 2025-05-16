@@ -26,4 +26,7 @@ public interface BookingAdapter {
 
     //Tìm Booking theo userId và đã có chuyến đi tripId đó
     Booking findBookingByUserIdAndTripId(String userId, String tripId);
+
+    //lấy trip id và số ghế dã đặt theo booking id
+    List<Object[]> findTripIdAndSeatCountByBookingId(String bookingId);
 }

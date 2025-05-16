@@ -89,6 +89,19 @@ public class BookingController {
         return bookingDTOMapper.toBookingDTO(b);
     }
 
+    //tìm theo userId
+    @GetMapping("/getByUserId/{userId}")
+    public List<BookingDTO> getByUserId(@PathVariable String userId) {
+
+        List<Booking> bookings = bookingUsecase.findBookingsByUserId(userId);
+
+        //chuyển từ List<Booking> sang List<BookingDTO>
+        //dùng mapper
+        List<BookingDTO> bookingDTOs = bookingDTOMapper.toBookingDTOs(bookings);
+
+        return bookingDTOs;
+    }
+
     //API đặt vé
     @PostMapping("/book")
     public ResponseEntity<?> book(@RequestBody CreateBookingDTO bookingDTO) {

@@ -80,6 +80,7 @@ public class BookingAdapterImpl implements BookingAdapter {
         return bookingMapper.toBooking(bookingModel);
     }
 
+    //tìm booking theo userId
     @Override
     public List<Booking> findBookingsByUserId(String userId) {
         List<BookingModel> bookingModels = bookingRepository.findByUserId(userId);
@@ -93,6 +94,12 @@ public class BookingAdapterImpl implements BookingAdapter {
         BookingModel bookingModel = bookingRepository.findBookingByUserIdAndTripId(userId, tripId);
 
         return bookingMapper.toBooking(bookingModel);
+    }
+
+    //lấy trip id và số ghế dã đặt theo booking id
+    @Override
+    public List<Object[]> findTripIdAndSeatCountByBookingId(String bookingId) {
+        return bookingRepository.findTripIdAndSeatCountByBookingId(bookingId);
     }
 
     //tự động tạo id theo số thứ tự/tháng/năm(BK00001_10_2023, BK00002_10_2023, BK00003_10_2023,...)
